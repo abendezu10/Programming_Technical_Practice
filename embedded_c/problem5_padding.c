@@ -30,21 +30,23 @@ struct StructA {
     char c;
     int i;
     char c2;
-}; 
+}; // 1 + 3 + 4 + 1 + 3 = 12 bytes (6 bytes and 6 byte sof padding)
 
 struct StructB {
     char c;
     char c2;
     int i;
-}; 
+}; // 1 + 1 + 2 + 4 = 8 bytes and 2 bytes of padding
 
 struct StructC {
     char a;
     char c; 
-    short d; 
-    char e; 
-    double b;
-}; 
+    char e;
+    short d;
+    double b; 
+}; // 1 + 1 + 2 + 1 + 7 + 8 + 4 = 24 bytes total with 11 bytes of padding
+   //
+   // ne whas 3 bytes of padding and 16 bytes total 
 
 int main(void) {
     printf("sizeof(struct StructA) = %zu\n", sizeof(struct StructA));

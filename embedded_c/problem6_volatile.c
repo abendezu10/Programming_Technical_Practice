@@ -23,12 +23,21 @@
  * what the compiler is allowed to assume about a plain (non-volatile)
  * uint32_t* that it doesn't see written anywhere in this function.
  *
+ * Because if you use a parameter tha tdoes not have the volatile it will jsut create
+ * a copy of that variable and store it in a cpu cache. For example, status_reg_addr address has a value, assume a 32 
+ * bit interger. Thus, the value at the time of this function being called, will just be a copy and not represent
+ * the changes done by hardware and other forcesoutside the program 
+ *
  * PART B: Fix it with the minimum change needed.
  *
  * PART C: A common misconception — does `volatile` make an access
  * atomic (safe from race conditions)? Does it add any locking?
  * What's the actual difference between volatile and something like
  * a mutex? (One-line answer is fine, but be precise.)
+ *
+ * No because volatile keyword does not claim ownership over resources which is the mechanism to stop deadlocks.
+ * Volatile allows the variable to be changed outside the normal flow of the program but mutex locks a variable
+ * so that only the task that locked it has access to change it
  */
 
 #include <stdint.h>
@@ -40,7 +49,7 @@
 // Simulate polling a hardware status register until it's ready.
 // BUG: as written, an optimizing compiler is allowed to hang here
 // forever even if the hardware sets the flag.
-void wait_until_ready(uint32_t *status_reg) {
+void wait_until_ready(volatile uint32_t *status_reg) {
     while ((*status_reg & READY_FLAG) == 0) {
         // spin — waiting for hardware to set the flag
     }
